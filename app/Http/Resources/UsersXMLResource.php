@@ -11,7 +11,12 @@ use SimpleXMLElement;
 
 class UsersXMLResource implements UsersResource
 {
-    public function readyForResponse(Collection $users): mixed
+    /**
+     * Converts users collection to XML string
+     * @param Collection $users
+     * @return string|bool
+     */
+    public function readyForResponse(Collection $users): string|bool
     {
         $xml = new SimpleXMLElement('<users></users>');
 

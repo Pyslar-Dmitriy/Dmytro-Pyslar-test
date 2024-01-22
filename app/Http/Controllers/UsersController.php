@@ -15,15 +15,21 @@ use Illuminate\Support\Facades\App;
 
 class UsersController extends Controller
 {
+    /**
+     * METHOD - GET
+     * Returns random users
+     * @param Request $request
+     * @return Response
+     */
     public function getUsers(Request $request): Response
     {
         $limit = $request->limit ?? 10;
         $users = new Collection();
 
-        $instance = App::make(UsersService::class);
+        $usersService = App::make(UsersService::class);
 
         for ($i = 0; $i < $limit; $i++) {
-            $users->add($instance->getUser());
+            $users->add($usersService->getUser());
         }
 
         $sorted = $users->sortBy([
@@ -31,6 +37,7 @@ class UsersController extends Controller
         ]);
 
         $resource = App::make(UsersResource::class);
+
         $formatted = $resource->readyForResponse($sorted);
         $header = $resource instanceof UsersXMLResource ? 'application/xml' : 'application/json';
 
